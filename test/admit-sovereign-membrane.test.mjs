@@ -33,7 +33,7 @@ test("composeAgentCard names the sovereign circuit interface with the provisione
   const card = composeAgentCard({ nodeId: "example-service", chainId: 31337, account: "0x" + "1".repeat(40) });
   assert.equal(card.name, "example-service");
   const params = card.capabilities.extensions[0].params;
-  assert.equal(params.profile, "org.emsenn.rmn.sovereign-circuit-interface.v1");
+  assert.equal(params.profile, "org.emsenn.sen.sovereign-circuit-interface.v1");
   assert.equal(params.account, `eip155:31337:0x${"1".repeat(40)}`);
 });
 

@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 import { resolve } from "node:path";
+import { argument as option } from "@red-cup-engineering/javascript-node-services-section/argv";
 import { admitSovereignMembrane } from "../src/admit-sovereign-membrane.mjs";
 
-function option(name) {
-  const at = process.argv.indexOf(name);
-  return at === -1 ? undefined : process.argv[at + 1];
-}
 function required(name) {
   const value = option(name);
   if (!value) throw new Error(`${name} is required`);

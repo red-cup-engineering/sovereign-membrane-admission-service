@@ -9,10 +9,12 @@ import { dirname, join, resolve } from "node:path";
 import { spawnSync } from "node:child_process";
 import {
   EMPTY_WITNESS_ROOT,
+} from "@red-cup-engineering/computer-content-engineering-services-section/semantic-content-identity";
+import {
   identifyNormalizedSemanticContent,
-} from "@red-cup-engineering/semantic-content-identify-service";
-import { jsonToTerm } from "@red-cup-engineering/relation-model-notation-json-codec";
-import { inferTy } from "@red-cup-engineering/relation-model-notation-typing";
+} from "@red-cup-engineering/computer-code-engineering-services-section/semiotic-expression-notation/semantic-content-identity";
+import { jsonToTerm } from "@red-cup-engineering/computer-data-engineering-services-section/semiotic-expression-notation/json-codec";
+import { inferTy } from "@red-cup-engineering/computer-data-engineering-services-section/semiotic-expression-notation/typing";
 
 export class SovereignMembraneAdmissionError extends Error {
   constructor(message) {
@@ -25,7 +27,7 @@ export class SovereignMembraneAdmissionError extends Error {
 function identity(label) {
   const term = jsonToTerm(label);
   const semanticType = inferTy([], term);
-  if (semanticType === null) throw new SovereignMembraneAdmissionError("membrane label did not derive an RMN type");
+  if (semanticType === null) throw new SovereignMembraneAdmissionError("membrane label did not derive an SEN type");
   return identifyNormalizedSemanticContent({
     objectKind: "sovereign-membrane.label",
     semanticType,
@@ -111,10 +113,10 @@ export function composeAgentCard({ nodeId, chainId, account }) {
     capabilities: {
       extensions: [
         {
-          uri: identity("org.emsenn.rmn.sovereign-circuit-interface.v1"),
+          uri: identity("org.emsenn.sen.sovereign-circuit-interface.v1"),
           required: true,
           params: {
-            profile: "org.emsenn.rmn.sovereign-circuit-interface.v1",
+            profile: "org.emsenn.sen.sovereign-circuit-interface.v1",
             account: `eip155:${chainId}:${account}`,
             authority: identity(`${label}:authority`),
             custody: identity(`${label}:custody`),
