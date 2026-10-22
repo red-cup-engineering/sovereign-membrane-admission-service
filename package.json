@@ -33,7 +33,7 @@
   "engines": {
     "node": ">=22"
   },
-  "license": "Apache-2.0",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/red-cup-engineering/sovereign-membrane-admission-service.git"
@@ -41,5 +41,9 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
   }
 }
