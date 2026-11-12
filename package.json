@@ -25,6 +25,7 @@
     "verify": "npm run check && npm test && npm pack --dry-run"
   },
   "dependencies": {
+    "@red-cup-engineering/computer-code-engine": "^0.1.0",
     "@red-cup-engineering/computer-code-engineering-services-section": "^0.2.1",
     "@red-cup-engineering/computer-data-engineering-services-section": "^0.7.1",
     "@red-cup-engineering/javascript-node-services-section": "^0.4.2",
