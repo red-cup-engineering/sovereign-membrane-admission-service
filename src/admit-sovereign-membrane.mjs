@@ -13,8 +13,8 @@ import {
 import {
   identifyNormalizedSemanticContent,
 } from "@red-cup-engineering/computer-code-engineering-services-section/semiotic-expression-notation/semantic-content-identity";
-import { jsonToTerm } from "@red-cup-engineering/computer-code-engine/semiotic-expression-notation/json-codec";
-import { inferTy } from "@red-cup-engineering/computer-code-engine/semiotic-expression-notation/typing";
+import { jsonToTerm } from "@red-cup-engineering/typed-computer-code-engine/semiotic-expression-notation/json-codec";
+import { inferTy } from "@red-cup-engineering/typed-computer-code-engine/semiotic-expression-notation/typing";
 
 export class SovereignMembraneAdmissionError extends Error {
   constructor(message) {

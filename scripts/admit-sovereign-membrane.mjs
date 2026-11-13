@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { resolve } from "node:path";
-import { argument as option } from "@red-cup-engineering/javascript-node-services-section/argv";
+import { argument as option } from "@red-cup-engineering/javascript-node-engineering-services-section/argv";
 import { admitSovereignMembrane } from "../src/admit-sovereign-membrane.mjs";
 
 function required(name) {
