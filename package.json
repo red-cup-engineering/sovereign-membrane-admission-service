@@ -1,0 +1,45 @@
+{
+  "name": "@red-cup-engineering/sovereign-membrane-admission-service",
+  "version": "0.1.6-dev.0",
+  "private": false,
+  "type": "module",
+  "description": "Admits a sovereign membrane for a die already present on disk: binds smart-account-provisioning through its own independently addressed provider CapCell, generates the die's Ed25519 agent-card-signing material, and composes its Agent Card. Never mints chain custody in-process.",
+  "exports": {
+    ".": {
+      "types": "./types/index.d.mts",
+      "import": "./src/admit-sovereign-membrane.mjs"
+    }
+  },
+  "bin": {
+    "admit-sovereign-membrane": "./scripts/admit-sovereign-membrane.mjs"
+  },
+  "files": [
+    "scripts/",
+    "src/",
+    "types/"
+  ],
+  "scripts": {
+    "check": "node --check src/admit-sovereign-membrane.mjs && node --check scripts/admit-sovereign-membrane.mjs",
+    "verify": "npm run check && npm pack --dry-run"
+  },
+  "dependencies": {
+    "@red-cup-engineering/computer-code-engine": "^0.1.0",
+    "@red-cup-engineering/computer-data-engineering-services-section": "^0.7.1",
+    "@red-cup-engineering/parse-javascript-argv-service": "^0.3.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/red-cup-engineering/sovereign-membrane-admission-service.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/561-group/.github/blob/main/TIPS.md"
+  }
+}
