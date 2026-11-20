@@ -16,7 +16,7 @@ import {
 import { jsonToTerm } from "@red-cup-engineering/computer-code-engine/semiotic-expression-notation/json-codec";
 import { inferTy } from "@red-cup-engineering/computer-code-engine/semiotic-expression-notation/typing";
 
-export class SovereignMembraneAdmissionError extends Error {
+export class SovereignMembraneValidationError extends Error {
   constructor(message) {
     super(message);
     this.name = "SovereignMembraneAdmissionError";
@@ -27,7 +27,7 @@ export class SovereignMembraneAdmissionError extends Error {
 function identity(label) {
   const term = jsonToTerm(label);
   const semanticType = inferTy([], term);
-  if (semanticType === null) throw new SovereignMembraneAdmissionError("membrane label did not derive an SEN type");
+  if (semanticType === null) throw new SovereignMembraneValidationError("membrane label did not derive an SEN type");
   return identifyNormalizedSemanticContent({
     objectKind: "sovereign-membrane.label",
     semanticType,
@@ -39,12 +39,12 @@ function identity(label) {
 function readNodeId(settlementPath) {
   const manifestPath = join(settlementPath, "package.json");
   if (!existsSync(manifestPath)) {
-    throw new SovereignMembraneAdmissionError(`settlement package.json is absent: ${manifestPath}`);
+    throw new SovereignMembraneValidationError(`settlement package.json is absent: ${manifestPath}`);
   }
   const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
   const nodeId = manifest["x-agentic-metro-enterprise"]?.["node-id"];
   if (!nodeId) {
-    throw new SovereignMembraneAdmissionError("settlement does not declare x-agentic-metro-enterprise.node-id");
+    throw new SovereignMembraneValidationError("settlement does not declare x-agentic-metro-enterprise.node-id");
   }
   return nodeId;
 }
@@ -76,20 +76,20 @@ export function provisionChainAccount({
   ];
   const result = spawn(process.execPath, args, { encoding: "utf8", maxBuffer: 16 * 1024 * 1024 });
   if (result.status !== 0) {
-    throw new SovereignMembraneAdmissionError(
+    throw new SovereignMembraneValidationError(
       `smart-account-provisioning provider refused: ${(result.stderr || result.stdout || "").trim()}`,
     );
   }
-  let receipt;
+  let record;
   try {
-    receipt = JSON.parse(result.stdout);
+    record = JSON.parse(result.stdout);
   } catch {
-    throw new SovereignMembraneAdmissionError("smart-account-provisioning provider returned a non-JSON receipt");
+    throw new SovereignMembraneValidationError("smart-account-provisioning provider returned a non-JSON receipt");
   }
-  if (receipt.type !== "EnterpriseAccountProvisioned" || typeof receipt.account !== "string") {
-    throw new SovereignMembraneAdmissionError("smart-account-provisioning provider returned an unrecognized receipt shape");
+  if (record.type !== "EnterpriseAccountProvisioned" || typeof record.account !== "string") {
+    throw new SovereignMembraneValidationError("smart-account-provisioning provider returned an unrecognized receipt shape");
   }
-  return receipt;
+  return record;
 }
 
 // Ed25519 agent-card-signing material is inert local material (pure compute,
@@ -128,7 +128,7 @@ export function composeAgentCard({ nodeId, chainId, account }) {
   };
 }
 
-export async function admitSovereignMembrane({
+export async function validateSovereignMembrane({
   settlementPath,
   urn,
   chainId,
@@ -142,9 +142,9 @@ export async function admitSovereignMembrane({
   now,
 }) {
   const nodeId = readNodeId(settlementPath);
-  const receipt = provisionChainAccount({ settlementPath, urn, rpcUrl, bundlerUrl, paymasterUrl, credentialRoot, workspace, providerBin, spawn });
+  const record = provisionChainAccount({ settlementPath, urn, rpcUrl, bundlerUrl, paymasterUrl, credentialRoot, workspace, providerBin, spawn });
   const signing = generateSigningMaterial(nodeId, { now });
-  const agentCard = composeAgentCard({ nodeId, chainId, account: receipt.account });
+  const agentCard = composeAgentCard({ nodeId, chainId, account: record.account });
 
   const signingDir = join(settlementPath, "data", "agent-card-signing");
   const publicSigningDir = join(settlementPath, "content", "agent-card-signing");
@@ -162,8 +162,8 @@ export async function admitSovereignMembrane({
 
   return Object.freeze({
     nodeId,
-    account: receipt.account,
-    provisioningReceipt: receipt,
+    account: record.account,
+    provisioningReceipt: record,
     privateKeyPath,
     jwksPath,
     agentCardPath,
